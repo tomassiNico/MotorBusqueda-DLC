@@ -12,9 +12,10 @@
         <title>SuBusqueda</title> <!-- SuBusqueda es lo que buscaron-->
     </head>
     <body>
-        <div>
-            <jsp:include page="index.jsp"/>
-        </div>
+        <form action="buscar" method="post">
+            <input type="text" id="buscar" name="busqueda" placeholder="Ingrese su busqueda" value="${busqueda}">
+            <input type="submit" id="entrar" name="entrar" value="Buscar">
+        </form>
         <div>
             <h3> Documento 1  <h4> Puntaje: n1 </h4> </h3>
             <h3> Documento 2  <h4> Puntaje: n2 </h4> </h3>

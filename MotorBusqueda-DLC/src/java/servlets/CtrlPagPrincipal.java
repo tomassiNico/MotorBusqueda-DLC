@@ -5,6 +5,7 @@
  */
 package servlets;
 
+import BD.ConexionBD;
 import clases.Serializacion.HashtableIOException;
 import clases.Serializacion.HashtableReader;
 import clases.Vocabulario;
@@ -42,7 +43,6 @@ public class CtrlPagPrincipal extends HttpServlet {
             throws ServletException, IOException, HashtableIOException, Exception {
         response.setContentType("text/html;charset=UTF-8");
         
-        
         //toma la busqueda ingresada
         String busqueda = request.getParameter("busqueda");
         //parsea la busqueda para sólo quedarse con las palabras, ignorando lo que no sean letras
@@ -53,6 +53,7 @@ public class CtrlPagPrincipal extends HttpServlet {
         {
             palabrasBuscadas.add(st.nextToken()); //obtiene la busqueda ya parseada
         }
+        
         
         
         ErrorMsg errorMsg = null;
@@ -70,6 +71,10 @@ public class CtrlPagPrincipal extends HttpServlet {
         {
             vocabulario = new Vocabulario();
             vocabulario.agregarCarpetaDocumentos();
+            //ConexionBD cb = new ConexionBD();
+            //cb.MySQLConnection();
+            //cb.insertData("palabraxdocumento", "palabra", "doc", 1);
+            ///cb.closeConnection();
         }
        
         
@@ -80,7 +85,7 @@ public class CtrlPagPrincipal extends HttpServlet {
             errorMsg = new ErrorMsg(errorTitle, e.getMessage());
             request.setAttribute("errorMsg", errorMsg);
         }
-
+        request.setAttribute("busqueda", busqueda);
         ServletContext app = this.getServletContext();
         RequestDispatcher disp = app.getRequestDispatcher(dest);
         disp.forward(request, response);

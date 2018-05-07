@@ -20,21 +20,22 @@ public class ConexionBD {
     
     
     //Configuración de BD de Nico
-    public static String servidor = "jdbc:mysql://localhost:3306/DLC_Posteo";
-    public static String user = "root";
-    public static String pass = "";
+    //public static String servidor = "jdbc:mysql://localhost:3306/DLC_Posteo";
+    //public static String user = "root";
+    //public static String pass = "";
     
     
     /*Configuración de BD de Mayra
     public static String servidor = "jdbc:mysql://localhost:3306/DLC-TP-Motor";
     public static String user = "root";
-    public static String pass = "";
+    public static String pass = "";*/
     
-    /*Configuración de BD de Alexis
-    public static String servidor = "jdbc:mysql://localhost:3306/DLC_Posteo";
+    //Configuración de BD de Alexis
+    public static String servidor = "jdbc:mysql://localhost:3306/dlc-motor";
     public static String user = "root";
     public static String pass = "";
-    */
+    public static ConexionBD instancia;
+    
     
     
     public static String driver = "com.mysql.jdbc.Driver";
@@ -42,13 +43,25 @@ public class ConexionBD {
     
     
     
-    
+    public static ConexionBD getInstance() throws Exception
+    {
+        if(instancia != null){
+            return instancia;
+        }
+        else {
+            instancia = new ConexionBD();
+            instancia.MySQLConnection();
+            return instancia;
+        }
+        
+    }
     
     public void MySQLConnection() throws Exception {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            conexion = (Connection) DriverManager.getConnection(this.servidor + this.servidor, this.user, this.pass);
-            JOptionPane.showMessageDialog(null, "Se ha iniciado la conexión con el servidor de forma exitosa");
+            //conexion = (Connection) DriverManager.getConnection(this.servidor + this.servidor, this.user, this.pass);
+            conexion = (Connection) DriverManager.getConnection(this.servidor, this.user, this.pass);
+            System.out.println("SE ABRIO UNA NUEVA CONEXION A LA BASE DE DATOS");
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(ConexionBD.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
@@ -58,8 +71,9 @@ public class ConexionBD {
     
      public void closeConnection() {
         try {
+            System.out.println("SE CERRO LA CONEXION A LA BASE DE DATOS");
             conexion.close();
-            JOptionPane.showMessageDialog(null, "Se ha finalizado la conexión con el servidor");
+            
         } catch (SQLException ex) {
             Logger.getLogger(ConexionBD.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -68,14 +82,12 @@ public class ConexionBD {
      public void insertData(String table_name, String palabra, String documento, int frecuencia) {
         try {
             String Query = "INSERT INTO " + table_name + " VALUES("
-                    + "\"" + palabra + "\", "
-                    + "\"" + documento + "\", "
-                    + "\"" + frecuencia + "\")";
+                    + "'" + documento + "',"
+                    + "'" + palabra + "',"
+                    + frecuencia + ")";
             Statement st = (Statement) conexion.createStatement();
             st.executeUpdate(Query);
-            JOptionPane.showMessageDialog(null, "Datos almacenados de forma exitosa");
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error en el almacenamiento de datos");
         }
     } 
      
@@ -97,4 +109,19 @@ public class ConexionBD {
             JOptionPane.showMessageDialog(null, "Error en la adquisición de datos");
         }
     } 
+
+    public int getFrecuenciaDoc(String table_name, String palabra, String documento) {
+        try{
+            String Query = "SELECT Frecuencia FROM " + table_name + " WHERE Termino = '"
+                    + palabra + "' AND Documento = '" + documento + "'";
+            Statement st = (Statement) conexion.createStatement();
+            java.sql.ResultSet resultSet;
+            resultSet = st.executeQuery(Query);
+            return Integer.valueOf(resultSet.getString("Frecuencia"));
+        }
+        catch (SQLException e) {
+            
+        }
+        return 0;
+    }
 }
