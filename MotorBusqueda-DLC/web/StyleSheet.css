@@ -1,0 +1,69 @@
+
+/* 
+    Created on : 20/04/2018, 11:05:51
+    Author     : aleex
+*/
+
+ footer
+{
+    padding: 1em;
+    color: white;
+    background-color: orange;
+    clear: left; /* hace que comiencen en el margen izquierdo */
+    text-align: center;
+    margin-top: 200px;
+}
+
+.title {
+    text-align: -webkit-center;
+    margin-top:  100px ;
+    font-family: Courier, Tahoma;
+    font-size: 35px;
+    color: blue;
+    
+}
+
+#buscar {
+    border-bottom-color: blue;
+    border-left-color: blueviolet;
+    width: 500px;
+    height: 20px;
+    
+}
+
+#entrar {
+    color: white;
+    border-radius: 4px;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    background: rgb(28, 184, 65);
+    padding: 7px;
+    border: none;
+    outline: none;
+}
+
+.form {
+    text-align: center;
+    margin-top: 20px;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0; 
+    width: 200px;
+    background-color: #f1f1f1;
+    text-align: left;
+    position: relative;
+    top:0;
+}
+nav li a {
+    display: block;
+    color: #000;
+    padding: 10px 16px;
+    text-decoration: none;
+}
+
+nav li a:hover {
+        background-color: #555;
+        color: white;
+}
