@@ -18,13 +18,13 @@ import javax.swing.JFrame;
 public class Vocabulario implements Serializable {
     
     private Hashtable<String, Termino> vocabulario;
-    private int contador;
+    private int contDocumentos;
     
    
     public Vocabulario()
     {
         this.vocabulario = new Hashtable();
-        this.contador = 0;
+        this.contDocumentos = 0;
     }
     
     public Vocabulario(Hashtable v)
@@ -66,14 +66,13 @@ public class Vocabulario implements Serializable {
             cont += 1;
             String palabra = (String) i.next();
             int frecuencia = aux.get(palabra);
-            
             Termino t = new Termino(palabra, frecuencia);
             this.agregarTermino(t);
             
             ConexionBD.getInstance().insertData("palabraxdocumento", palabra, archivo, frecuencia);
             System.out.println("Porcentaje del documento" + (cont/ (double)aux.keySet().size()));
         }
-        this.contador += 1;
+        this.contDocumentos += 1;
     }
     
     
@@ -83,7 +82,7 @@ public class Vocabulario implements Serializable {
     }
 
     public int getContador() {
-        return contador;
+        return contDocumentos;
     }
     
     public void agregarCarpetaDocumentos() throws FileNotFoundException, Exception
@@ -108,8 +107,9 @@ public class Vocabulario implements Serializable {
         for (int i=0; i < fileList.length; i++)
         {
             this.agregarDocumento(fileList[i]);
+            System.out.println("**********************************************************************\n******************************");
             System.out.println("Documento " + f.getName() + ": NUMERO " + i + " DE " + fileList.length );
-        }
+        }   System.out.println("**********************************************************************\n******************************");
         ConexionBD.getInstance().closeConnection();
     }
     

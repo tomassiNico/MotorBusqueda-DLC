@@ -5,13 +5,17 @@
  */
 package clases;
 
+import BD.ConexionBD;
+import java.util.ArrayList;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author mayur
  */
-public class Termino {
+public class Termino implements Comparable{
     
     private String palabra;
     private int maxFrecuenia;
@@ -78,7 +82,34 @@ public class Termino {
         }
         return true;
     }
+
+    public double getIdf() throws Exception{
+        int N = ConexionBD.getInstance().getCantidadDocumento();
+        return (Math.log10(N/nr));
+    }
     
-    
-    
+    /*@Override
+    public int compareTo(Object o) {
+        Termino obj = (Termino) o;
+    }*/
+
+    @Override
+    public int compareTo(Object t) {
+        if (this.getNr() < ((Termino)t).getNr())
+        {
+            return -1;
+        }
+        else if (this.getNr() > ((Termino)t).getNr()){
+            return 1;
+        }
+        return 0;
+    }
+
+    public ArrayList<Documento> buscarDocumentos(int R) throws Exception {
+            ArrayList<Documento> d = ConexionBD.getInstance().getDocumentosRelevantes("palabraxdocumento", R,this);
+            ConexionBD.getInstance().closeConnection();
+            return d;
+    }
 }
+
+

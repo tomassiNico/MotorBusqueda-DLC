@@ -4,11 +4,15 @@
  * and open the template in the editor.
  */
 package BD;
+import clases.Documento;
+import clases.Termino;
 import com.mysql.jdbc.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Map;
 import java.util.logging.*;
 import javax.swing.JOptionPane;
 
@@ -124,4 +128,48 @@ public class ConexionBD {
         }
         return 0;
     }
+
+    public int getCantidadDocumento() {
+        int cont = 0;
+        try{
+            String Query = "SELECT Distinct Documento FROM palabraxdocumento";
+            Statement st = (Statement) conexion.createStatement();
+            java.sql.ResultSet resultSet;
+            resultSet = st.executeQuery(Query);
+            while (resultSet.next())
+            {
+                cont += 1;
+            }
+        }
+        catch(SQLException e){
+        
+        }
+        return cont;
+    }
+
+    public ArrayList<Documento> getDocumentosRelevantes(String table_name, int R, Termino termino)
+    {
+        try {
+            ArrayList docs = new ArrayList();
+            String Query = "SELECT Documento FROM " + table_name + " WHERE Termino='" + termino.getPalabra() + 
+                "' LIMIT "+ R; 
+            Statement st = (Statement) conexion.createStatement();
+            java.sql.ResultSet resultSet;
+            resultSet = st.executeQuery(Query);
+            while(resultSet.next())
+            {
+                String documento = resultSet.getString("Documento");
+                Documento d = new Documento(documento);
+                docs.add(d);
+            }
+            return docs;
+        }
+        catch(SQLException e){
+        
+        }
+        return null;
+    }
+    
 }
+
+

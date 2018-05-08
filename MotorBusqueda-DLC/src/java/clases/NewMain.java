@@ -5,6 +5,8 @@
  */
 package clases;
 
+import BD.ConexionBD;
+
 /**
  *
  * @author aleex
@@ -16,9 +18,7 @@ public class NewMain {
      */
     public static void main(String[] args) throws Exception {
         // TODO code application logic here
-        Vocabulario v = new Vocabulario();
-        v.agregarDocumento("00ws110.txt");
-        System.out.println("Tamaño del vocabulario: " + v.getVocabulario().size());
+        System.out.println(ConexionBD.getInstance().getCantidadDocumento());
     }
     
 }

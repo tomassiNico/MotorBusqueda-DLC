@@ -6,10 +6,16 @@
 package servlets;
 
 import BD.ConexionBD;
+import clases.Busqueda;
+import clases.Documento;
 import clases.Serializacion.HashtableIOException;
 import clases.Serializacion.HashtableReader;
+import clases.Serializacion.VocabularioReader;
+import clases.Serializacion.VocabularioWriter;
+import clases.Termino;
 import clases.Vocabulario;
 import com.sun.org.apache.xalan.internal.xsltc.compiler.util.ErrorMsg;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -43,49 +49,57 @@ public class CtrlPagPrincipal extends HttpServlet {
             throws ServletException, IOException, HashtableIOException, Exception {
         response.setContentType("text/html;charset=UTF-8");
         
-        //toma la busqueda ingresada
-        String busqueda = request.getParameter("busqueda");
-        //parsea la busqueda para sólo quedarse con las palabras, ignorando lo que no sean letras
-        StringTokenizer st = new StringTokenizer(busqueda, "\"’,.-_+&<>``={}~^@/()[]%'*$|°[0-1-2-3-4-5-6-7-8-9]#:*»«?¡!¿; \n");
-
-        ArrayList palabrasBuscadas = new ArrayList();
-        while(st.hasMoreTokens())
-        {
-            palabrasBuscadas.add(st.nextToken()); //obtiene la busqueda ya parseada
-        }
-        
-        
-        
-        ErrorMsg errorMsg = null;
-        String errorTitle = "No se encontraron resultados para la busqueda";
-        String dest = "/error.jsp";
-        
         Vocabulario vocabulario;
-        
         try
         {
-            HashtableReader hr = new HashtableReader();
-            vocabulario = new Vocabulario(hr.read());
+            VocabularioReader hr = new VocabularioReader();
+            vocabulario = hr.read();
         }
         catch(Exception e)
         {
             vocabulario = new Vocabulario();
             vocabulario.agregarCarpetaDocumentos();
-            //ConexionBD cb = new ConexionBD();
-            //cb.MySQLConnection();
-            //cb.insertData("palabraxdocumento", "palabra", "doc", 1);
-            ///cb.closeConnection();
+            VocabularioWriter hw = new VocabularioWriter();
+            hw.write(vocabulario);
         }
+        
+        //toma la busqueda ingresada
+        String palabras = request.getParameter("busqueda");
+        
+        //ESTO DEBERIA PEDIR R String R = request.getParameter("R");
+        //parsea la busqueda para sólo quedarse con las palabras, ignorando lo que no sean letras
+        StringTokenizer st = new StringTokenizer(palabras, "\"’,.-_+&<>``={}~^@/()[]%'*$|°[0-1-2-3-4-5-6-7-8-9]#:*»«?¡!¿; \n");
+
+        ArrayList<Termino> palabrasBuscadas = new ArrayList<>();
+        while(st.hasMoreTokens())
+        {
+            Termino t = vocabulario.getVocabulario().get(st.nextToken());
+            if (t != null) {
+                palabrasBuscadas.add(t);
+            }
+        }
+        File f = new File(".");
+        request.setAttribute("contextpath", f.getAbsolutePath());
+        
+        
+        ErrorMsg errorMsg = null;
+        String errorTitle = "No se encontraron resultados para la busqueda";
+        String dest = "/error.jsp";
        
         
         try {
+            Busqueda busqueda = new Busqueda(palabrasBuscadas, 10, vocabulario.getContador());
+            ArrayList<Documento> docsResultado = busqueda.ejecutarBusqueda();
+            request.setAttribute("documentos", docsResultado);
             dest = "/ResultadoBusqueda.jsp";
+            request.setAttribute("busqueda", palabras);
+            //request.setAttribute("resultado", documentos);
             
         } catch (Exception e) {
             errorMsg = new ErrorMsg(errorTitle, e.getMessage());
             request.setAttribute("errorMsg", errorMsg);
         }
-        request.setAttribute("busqueda", busqueda);
+        
         ServletContext app = this.getServletContext();
         RequestDispatcher disp = app.getRequestDispatcher(dest);
         disp.forward(request, response);
