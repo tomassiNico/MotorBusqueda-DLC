@@ -23,6 +23,7 @@ public class Busqueda {
 
     public Busqueda(ArrayList palabrasBuscadas, int R, int N) {
         this.palabrasBuscadas = palabrasBuscadas;
+        this.documentos = new Hashtable();
         this.R = R;
         this.ordenarPalabrasBuscadas();
         this.N = N;
@@ -36,6 +37,7 @@ public class Busqueda {
     public void buscarDocumentosRelevantes() throws Exception
     {
         int N = ConexionBD.getInstance().getCantidadDocumento();
+        ConexionBD.getInstance().closeConnection();
         for (Termino t: this.palabrasBuscadas)
         {
             ArrayList<Documento> docs = t.buscarDocumentos(this.R);

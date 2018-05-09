@@ -35,10 +35,10 @@ public class ConexionBD {
     public static String pass = "";*/
     
     //Configuración de BD de Alexis
-    public static String servidor = "jdbc:mysql://localhost:3306/dlc-motor";
-    public static String user = "root";
-    public static String pass = "";
-    public static ConexionBD instancia;
+    private static String servidor = "jdbc:mysql://localhost:3306/dlc-motor";
+    private static String user = "root";
+    private static String pass = "";
+    private static ConexionBD instancia;
     
     
     
@@ -50,6 +50,7 @@ public class ConexionBD {
     public static ConexionBD getInstance() throws Exception
     {
         if(instancia != null){
+            instancia.MySQLConnection();
             return instancia;
         }
         else {
@@ -65,7 +66,7 @@ public class ConexionBD {
             Class.forName("com.mysql.jdbc.Driver");
             //conexion = (Connection) DriverManager.getConnection(this.servidor + this.servidor, this.user, this.pass);
             conexion = (Connection) DriverManager.getConnection(this.servidor, this.user, this.pass);
-            System.out.println("SE ABRIO UNA NUEVA CONEXION A LA BASE DE DATOS");
+            //System.out.println("SE ABRIO UNA NUEVA CONEXION A LA BASE DE DATOS");
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(ConexionBD.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
@@ -75,7 +76,7 @@ public class ConexionBD {
     
      public void closeConnection() {
         try {
-            System.out.println("SE CERRO LA CONEXION A LA BASE DE DATOS");
+            //System.out.println("SE CERRO LA CONEXION A LA BASE DE DATOS");
             conexion.close();
             
         } catch (SQLException ex) {
@@ -115,18 +116,22 @@ public class ConexionBD {
     } 
 
     public int getFrecuenciaDoc(String table_name, String palabra, String documento) {
-        try{
+        int frecuencia = 0;
+        try{ 
             String Query = "SELECT Frecuencia FROM " + table_name + " WHERE Termino = '"
                     + palabra + "' AND Documento = '" + documento + "'";
+            System.out.println(Query);
             Statement st = (Statement) conexion.createStatement();
             java.sql.ResultSet resultSet;
             resultSet = st.executeQuery(Query);
-            return Integer.valueOf(resultSet.getString("Frecuencia"));
-        }
-        catch (SQLException e) {
+            int frec = resultSet.getInt("Frecuencia");
+            frecuencia = Integer.valueOf(resultSet.getString("Frecuencia"));
             
         }
-        return 0;
+        catch (SQLException e) {
+            System.out.println("HA OCURRIDO UN ERROR*****************************************************************");
+        }
+        return frecuencia;
     }
 
     public int getCantidadDocumento() {
@@ -149,8 +154,8 @@ public class ConexionBD {
 
     public ArrayList<Documento> getDocumentosRelevantes(String table_name, int R, Termino termino)
     {
+        ArrayList<Documento> docs = new ArrayList();
         try {
-            ArrayList docs = new ArrayList();
             String Query = "SELECT Documento FROM " + table_name + " WHERE Termino='" + termino.getPalabra() + 
                 "' LIMIT "+ R; 
             Statement st = (Statement) conexion.createStatement();
@@ -162,12 +167,11 @@ public class ConexionBD {
                 Documento d = new Documento(documento);
                 docs.add(d);
             }
-            return docs;
         }
         catch(SQLException e){
-        
+            System.out.println("Ocurrio un problema con la base de datos");
         }
-        return null;
+        return docs;
     }
     
 }

@@ -6,6 +6,7 @@
 package clases;
 
 import BD.ConexionBD;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.logging.Level;
@@ -15,7 +16,7 @@ import java.util.logging.Logger;
  *
  * @author mayur
  */
-public class Termino implements Comparable{
+public class Termino implements Comparable , Serializable{
     
     private String palabra;
     private int maxFrecuenia;

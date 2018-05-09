@@ -19,7 +19,7 @@ public class Documento implements Comparable {
     
     public Documento(String documento){
         //String direccion = "/home/nicolastomassi/NetBeansProjects/MotorBusqueda-DLC/MotorBusqueda-DLC/src/documentos" + documento;
-        String direccion = "C:\\Users\\aleex\\Documents\\NetBeansProjects\\MotorBusqueda-DLC\\MotorBusqueda-DLC\\src\\documentos" + documento;
+        String direccion = "C:\\Users\\aleex\\Documents\\NetBeansProjects\\MotorBusqueda-DLC\\MotorBusqueda-DLC\\src\\documentos\\" + documento;
         this.documento = new File(direccion);
         this.pesoTotal = 0;
         this.nombre = this.documento.getName();
@@ -33,6 +33,7 @@ public class Documento implements Comparable {
     
     public double getCalcularPeso(Termino palabra, int N) throws Exception{
         int tf = ConexionBD.getInstance().getFrecuenciaDoc("palabraxdocumento", palabra.getPalabra(), documento.getName());
+        System.out.println("FRECUENCIA DEL DOC: " + this.getNombre() + " f: " + tf);
         ConexionBD.getInstance().closeConnection();
         double w = tf * Math.log10(N/palabra.getNr());
         return w;

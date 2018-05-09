@@ -42,7 +42,7 @@
                 <h3>Seleccionar la carpeta de Destino del Documento:</h3>
                 <input type="text" id="buscar" name="destination"/>
                 <input type="submit" class="btn btn-info" value="Upload" name="upload" id="upload" />
-            </form>
+          </form>
         
        <div>
             <jsp:include page="footer.jsp" />

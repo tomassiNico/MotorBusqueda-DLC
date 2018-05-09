@@ -49,6 +49,9 @@ public class CtrlPagPrincipal extends HttpServlet {
             throws ServletException, IOException, HashtableIOException, Exception {
         response.setContentType("text/html;charset=UTF-8");
         
+        ErrorMsg errorMsg = null;
+        String errorTitle = "No se encontraron resultados para la busqueda";
+        String dest = "/error.jsp";
         Vocabulario vocabulario;
         try
         {
@@ -78,17 +81,13 @@ public class CtrlPagPrincipal extends HttpServlet {
                 palabrasBuscadas.add(t);
             }
         }
-        File f = new File(".");
-        request.setAttribute("contextpath", f.getAbsolutePath());
+      
         
         
-        ErrorMsg errorMsg = null;
-        String errorTitle = "No se encontraron resultados para la busqueda";
-        String dest = "/error.jsp";
        
-        
         try {
             Busqueda busqueda = new Busqueda(palabrasBuscadas, 10, vocabulario.getContador());
+            
             ArrayList<Documento> docsResultado = busqueda.ejecutarBusqueda();
             request.setAttribute("documentos", docsResultado);
             dest = "/ResultadoBusqueda.jsp";
