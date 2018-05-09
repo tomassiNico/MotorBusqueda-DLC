@@ -100,16 +100,29 @@ public class ConexionBD {
          try {
              StringBuilder Query = new StringBuilder();
              Query.append("INSERT INTO " + table_name + " VALUES");
+             int conMaxPaquete = 5000;
+             Statement st = (Statement) conexion.createStatement();
             for (int i = 0; i< palabra.size(); i++)
              {
-                 if (i == palabra.size() - 1){Query.append("('" + doc + "','" + palabra.get(i) + "'," + frec.get(i) + ")"); continue;}
+                 if (i == conMaxPaquete) {
+                        Query.append("('" + doc + "','" + palabra.get(i) + "'," + frec.get(i) + ")"); 
+                        st.executeUpdate(Query.toString());
+                        Query = new StringBuilder();
+                        Query.append("INSERT INTO " + table_name + " VALUES");
+                        conMaxPaquete += 5000;
+                        continue;
+                 }
+                 if (i == palabra.size() - 1){
+                     Query.append("('" + doc + "','" + palabra.get(i) + "'," + frec.get(i) + ")"); 
+                     continue;
+                 }
                  Query.append("('" + doc + "','" + palabra.get(i) + "'," + frec.get(i) + "),");
+                 System.out.println("('" + doc + "','" + palabra.get(i) + "'," + frec.get(i) + "),");
+                 //
              }
-             //System.out.println(Query.toString());
-             Statement st = (Statement) conexion.createStatement();
+             System.out.println("TAMAÑO DEL DOC: " + palabra.size());
              st.executeUpdate(Query.toString());
              this.closeConnection();
-             System.out.println("SE HA TERMINADO DE INSERTAR EL DOCUMENTO : " + doc);
          } 
          catch (SQLException ex) {
              System.out.println("Error en la insercion de datos del Posteo. DOCUMENTO: " + doc);
