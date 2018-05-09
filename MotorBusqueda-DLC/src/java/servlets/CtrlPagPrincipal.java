@@ -58,7 +58,6 @@ public class CtrlPagPrincipal extends HttpServlet {
         {
             VocabularioReader hr = new VocabularioReader();
             vocabulario = hr.read();
-            System.out.println("PALABRA WORK: " + vocabulario.getVocabulario().get("work"));
         }
         catch(Exception e)
         {
