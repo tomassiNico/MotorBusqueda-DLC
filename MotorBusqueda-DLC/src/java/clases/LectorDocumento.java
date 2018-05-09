@@ -54,6 +54,7 @@ public class LectorDocumento {
             while(st.hasMoreTokens())
             {
                 String p = st.nextToken().toLowerCase();
+                p = p.replaceAll("[^\\dA-Za-z]", "");
                 Integer valorAnterior = this.palabras.get(p);
                 if (valorAnterior == null)
                 {

@@ -33,9 +33,6 @@
           <div id="menu">
               <jsp:include page="menu.jsp"/>
           </div>
-          <div id="formBusqueda">
-              <jsp:include page="busqueda.jsp"/>
-          </div>
           <div class="tabla">
               <table class="table table-bordered">
                   <tr>
@@ -48,7 +45,7 @@
                           <td>${docs.getName()}</td>
                           <td>${docs.getPeso()}</td>
                           <td>
-                              <input class="btn btn-success" type="button" onclick="">
+                              <input class="btn btn-info" type="button" onclick="" value="VER">
                           </td>
                       </tr>
               </table>

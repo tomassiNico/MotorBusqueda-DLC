@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 import javax.swing.JFileChooser;
@@ -60,18 +61,19 @@ public class Vocabulario implements Serializable {
         
         LectorDocumento l = new LectorDocumento("C:\\Users\\aleex\\Documents\\NetBeansProjects\\MotorBusqueda-DLC\\MotorBusqueda-DLC\\src\\documentos\\" + archivo);
         Hashtable<String, Integer> aux = l.palabrasObtenidas();
-        double cont = 0;
+        ArrayList term = new ArrayList();
+        ArrayList frec = new ArrayList();
         for(Iterator i = aux.keySet().iterator(); i.hasNext() ;)
         {
-            cont += 1;
             String palabra = (String) i.next();
             int frecuencia = aux.get(palabra);
             Termino t = new Termino(palabra, frecuencia);
             this.agregarTermino(t);
-            
-            ConexionBD.getInstance().insertData("palabraxdocumento", palabra, archivo, frecuencia);
-            System.out.println("Porcentaje del documento" + (cont/ (double)aux.keySet().size()));
+            term.add(palabra);
+            frec.add(frecuencia);
+            //ConexionBD.getInstance().insertData("palabraxdocumento", palabra, archivo, frecuencia);
         }
+        ConexionBD.getInstance().insertDataMasivo("palabraxdocumento", term, archivo, frec);
         this.contDocumentos += 1;
     }
     
@@ -108,7 +110,7 @@ public class Vocabulario implements Serializable {
         {
             this.agregarDocumento(fileList[i]);
             System.out.println("**********************************************************************\n******************************");
-            System.out.println("Documento " + f.getName() + ": NUMERO " + i + " DE " + fileList.length );
+            System.out.println("Documento " + f.getName() + ": NUMERO " + (i+1) + " DE " + fileList.length );
         }   System.out.println("**********************************************************************\n******************************");
         ConexionBD.getInstance().closeConnection();
     }

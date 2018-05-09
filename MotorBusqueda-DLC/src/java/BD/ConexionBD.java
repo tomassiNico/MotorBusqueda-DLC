@@ -95,25 +95,26 @@ public class ConexionBD {
         } catch (SQLException ex) {
         }
     } 
-     
-     public void getValues(String table_name) {
-        try {
-            String Query = "SELECT * FROM " + table_name + "ORDER BY frecuencia DESC";
-            Statement st = (Statement) conexion.createStatement();
-            java.sql.ResultSet resultSet;
-            resultSet = st.executeQuery(Query);
-
-//            while (resultSet.next()) {
-//                System.out.println("ID: " + resultSet.getString("ID") + " "
-//                        + "Nombre: " + resultSet.getString("Nombre") + " " + resultSet.getString("Apellido") + " "
-//                        + "Edad: " + resultSet.getString("Edad") + " "
-//                        + "Sexo: " + resultSet.getString("Sexo"));
-//            }
-
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error en la adquisición de datos");
+    public void insertDataMasivo(String table_name, ArrayList palabra, String doc, ArrayList frec)
+    {
+         try {
+             StringBuilder Query = new StringBuilder();
+             Query.append("INSERT INTO " + table_name + " VALUES");
+            for (int i = 0; i< palabra.size(); i++)
+             {
+                 if (i == palabra.size() - 1){Query.append("('" + doc + "','" + palabra.get(i) + "'," + frec.get(i) + ")"); continue;}
+                 Query.append("('" + doc + "','" + palabra.get(i) + "'," + frec.get(i) + "),");
+             }
+             //System.out.println(Query.toString());
+             Statement st = (Statement) conexion.createStatement();
+             st.executeUpdate(Query.toString());
+             this.closeConnection();
+             System.out.println("SE HA TERMINADO DE INSERTAR EL DOCUMENTO : " + doc);
+         } 
+         catch (SQLException ex) {
+             System.out.println("Error en la insercion de datos del Posteo. DOCUMENTO: " + doc);
         }
-    } 
+    }
 
     public int getFrecuenciaDoc(String table_name, String palabra, String documento) {
         int frecuencia = 0;
@@ -129,7 +130,7 @@ public class ConexionBD {
             
         }
         catch (SQLException e) {
-            System.out.println("HA OCURRIDO UN ERROR*****************************************************************");
+            System.out.println("HA OCURRIDO UN ERROR");
         }
         return frecuencia;
     }
