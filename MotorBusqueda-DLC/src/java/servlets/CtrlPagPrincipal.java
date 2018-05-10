@@ -86,17 +86,19 @@ public class CtrlPagPrincipal extends HttpServlet {
       
         
         
-       dest = "/ResultadoBusqueda.jsp";
+//       dest = "/ResultadoBusqueda.jsp";
         try {
-            /*Busqueda busqueda = new Busqueda(palabrasBuscadas, 10, vocabulario.getContador());
-            
+            dest = "/ResultadoBusqueda.jsp";
+            Busqueda busqueda = new Busqueda(palabrasBuscadas, 10, vocabulario.getContador());            
             ArrayList<Documento> docsResultado = busqueda.ejecutarBusqueda();
+            System.out.println("Cantidad de documentos : " + docsResultado.size());
             request.setAttribute("documentos", docsResultado);
             dest = "/ResultadoBusqueda.jsp";
             request.setAttribute("busqueda", palabras);
             //request.setAttribute("resultado", documentos);*/
             
         } catch (Exception e) {
+            
             errorMsg = new ErrorMsg(errorTitle, e.getMessage());
             request.setAttribute("errorMsg", errorMsg);
         }

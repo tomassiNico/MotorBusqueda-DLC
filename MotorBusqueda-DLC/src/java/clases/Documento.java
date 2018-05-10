@@ -18,8 +18,8 @@ public class Documento implements Comparable {
     private String nombre;
     
     public Documento(String documento){
-        //String direccion = "/home/nicolastomassi/NetBeansProjects/MotorBusqueda-DLC/MotorBusqueda-DLC/src/documentos" + documento;
-        String direccion = "C:\\Users\\aleex\\Documents\\NetBeansProjects\\MotorBusqueda-DLC\\MotorBusqueda-DLC\\src\\documentos\\" + documento;
+        String direccion = "/home/nicolastomassi/DocumentosTP1/" + documento;
+        //String direccion = "C:\\Users\\aleex\\Documents\\NetBeansProjects\\MotorBusqueda-DLC\\MotorBusqueda-DLC\\src\\documentos\\" + documento;
         this.documento = new File(direccion);
         this.pesoTotal = 0;
         this.nombre = this.documento.getName();

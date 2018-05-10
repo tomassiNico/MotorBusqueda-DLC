@@ -6,6 +6,8 @@
 package clases;
 
 import BD.ConexionBD;
+import clases.Serializacion.VocabularioReader;
+import clases.Serializacion.VocabularioWriter;
 
 /**
  *
@@ -18,7 +20,19 @@ public class NewMain {
      */
     public static void main(String[] args) throws Exception {
         // TODO code application logic here
-        System.out.println(ConexionBD.getInstance().getCantidadDocumento());
-    }
+        Vocabulario vocabulario;
+        try
+        {
+            VocabularioReader hr = new VocabularioReader();
+            vocabulario = hr.read();
+        }
+        catch(Exception e)
+        {
+            vocabulario = new Vocabulario();
+            vocabulario.agregarCarpetaDocumentos();
+            
+            VocabularioWriter hw = new VocabularioWriter();
+            hw.write(vocabulario);
+        }    }
     
 }

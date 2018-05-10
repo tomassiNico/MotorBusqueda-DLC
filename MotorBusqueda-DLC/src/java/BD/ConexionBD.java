@@ -24,9 +24,9 @@ public class ConexionBD {
     
     
     //Configuración de BD de Nico
-    //public static String servidor = "jdbc:mysql://localhost:3306/DLC_Posteo";
-    //public static String user = "root";
-    //public static String pass = "";
+    public static String servidor = "jdbc:mysql://localhost:3306/DLC_Posteo";
+    public static String user = "root";
+    public static String pass = "";
     
     
     /*Configuración de BD de Mayra
@@ -35,9 +35,9 @@ public class ConexionBD {
     public static String pass = "";*/
     
     //Configuración de BD de Alexis
-    private static String servidor = "jdbc:mysql://localhost:3306/dlc-motor";
-    private static String user = "root";
-    private static String pass = "";
+//    private static String servidor = "jdbc:mysql://localhost:3306/dlc-motor";
+//    private static String user = "root";
+//    private static String pass = "";
     private static ConexionBD instancia;
     
     
