@@ -108,7 +108,6 @@ public class Termino implements Comparable , Serializable{
 
     public ArrayList<Documento> buscarDocumentos(int R) throws Exception {
             ArrayList<Documento> d = ConexionBD.getInstance().getDocumentosRelevantes("palabraxdocumento", R,this);
-            ConexionBD.getInstance().closeConnection();
             return d;
     }
 }

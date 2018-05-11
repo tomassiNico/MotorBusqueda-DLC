@@ -24,9 +24,9 @@ public class ConexionBD {
     
     
     //Configuración de BD de Nico
-    public static String servidor = "jdbc:mysql://localhost:3306/DLC_Posteo";
-    public static String user = "root";
-    public static String pass = "";
+    //public static String servidor = "jdbc:mysql://localhost:3306/DLC_Posteo";
+    //public static String user = "root";
+    //public static String pass = "";
     
     
     /*Configuración de BD de Mayra
@@ -35,9 +35,9 @@ public class ConexionBD {
     public static String pass = "";*/
     
     //Configuración de BD de Alexis
-//    private static String servidor = "jdbc:mysql://localhost:3306/dlc-motor";
-//    private static String user = "root";
-//    private static String pass = "";
+    private static String servidor = "jdbc:mysql://localhost:3306/dlc-motor";
+    private static String user = "root";
+    private static String pass = "";
     private static ConexionBD instancia;
     
     
@@ -117,10 +117,10 @@ public class ConexionBD {
                      continue;
                  }
                  Query.append("('" + doc + "','" + palabra.get(i) + "'," + frec.get(i) + "),");
-                 System.out.println("('" + doc + "','" + palabra.get(i) + "'," + frec.get(i) + "),");
+                 //System.out.println("('" + doc + "','" + palabra.get(i) + "'," + frec.get(i) + "),");
                  //
              }
-             System.out.println("TAMAÑO DEL DOC: " + palabra.size());
+             //System.out.println("TAMAÑO DEL DOC: " + palabra.size());
              st.executeUpdate(Query.toString());
              this.closeConnection();
          } 
@@ -131,25 +131,25 @@ public class ConexionBD {
 
     public int getFrecuenciaDoc(String table_name, String palabra, String documento) {
         int frecuencia = 0;
-        try{ 
+        try {
             String Query = "SELECT Frecuencia FROM " + table_name + " WHERE Termino = '"
                     + palabra + "' AND Documento = '" + documento + "'";
-            System.out.println(Query);
-            Statement st = (Statement) conexion.createStatement();
-            java.sql.ResultSet resultSet;
-            resultSet = st.executeQuery(Query);
-            int frec = resultSet.getInt("Frecuencia");
-            frecuencia = Integer.valueOf(resultSet.getString("Frecuencia"));
-            
+            PreparedStatement ps = (PreparedStatement) conexion.prepareStatement(Query);
+            ResultSet rs = (ResultSet) ps.executeQuery();
+            while (rs.next())
+                {
+                    frecuencia = rs.getInt("Frecuencia");
+                }
         }
-        catch (SQLException e) {
-            System.out.println("HA OCURRIDO UN ERROR");
+        catch (SQLException e){
+            System.out.println("ERROR AL OBTENER LA FRECUENCIA");
         }
         return frecuencia;
     }
 
     public int getCantidadDocumento() {
         int cont = 0;
+        long inicio_ms = System.currentTimeMillis();
         try{
             String Query = "SELECT Distinct Documento FROM palabraxdocumento";
             Statement st = (Statement) conexion.createStatement();
@@ -163,6 +163,8 @@ public class ConexionBD {
         catch(SQLException e){
         
         }
+        this.closeConnection();
+        System.out.println("Tiempo que tardo " + (System.currentTimeMillis() - inicio_ms));
         return cont;
     }
 
@@ -185,6 +187,7 @@ public class ConexionBD {
         catch(SQLException e){
             System.out.println("Ocurrio un problema con la base de datos");
         }
+        this.closeConnection();
         return docs;
     }
     

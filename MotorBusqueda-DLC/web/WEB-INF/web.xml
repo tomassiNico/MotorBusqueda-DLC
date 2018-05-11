@@ -8,6 +8,10 @@
         <servlet-name>FileUploadServlet</servlet-name>
         <servlet-class>servlets.FileUploadServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CrtlConfig</servlet-name>
+        <servlet-class>servlets.CrtlConfig</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>CtrlPagPrincipal</servlet-name>
         <url-pattern>/buscar</url-pattern>
@@ -15,6 +19,10 @@
     <servlet-mapping>
         <servlet-name>FileUploadServlet</servlet-name>
         <url-pattern>/upload</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CrtlConfig</servlet-name>
+        <url-pattern>/config</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

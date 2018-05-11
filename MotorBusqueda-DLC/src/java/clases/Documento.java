@@ -33,7 +33,6 @@ public class Documento implements Comparable {
     
     public double getCalcularPeso(Termino palabra, int N) throws Exception{
         int tf = ConexionBD.getInstance().getFrecuenciaDoc("palabraxdocumento", palabra.getPalabra(), documento.getName());
-        System.out.println("FRECUENCIA DEL DOC: " + this.getNombre() + " f: " + tf);
         ConexionBD.getInstance().closeConnection();
         double w = tf * Math.log10(N/palabra.getNr());
         return w;

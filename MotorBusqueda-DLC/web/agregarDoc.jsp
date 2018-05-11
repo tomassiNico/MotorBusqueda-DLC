@@ -33,17 +33,18 @@
           <div id="menu">
               <jsp:include page="menu.jsp"/>
           </div>
-          <h2>
-              Ingreso de Documentos al Sistema
-          </h2>
-          <form class="form" method="POST" action="upload" enctype="multipart/form-data" >
-                <h3>Seleccionar el Documento a ingresar:</h3>
-                <input type="file" class="btn btn-group" name="file" id="file" />
-                <h3>Seleccionar la carpeta de Destino del Documento:</h3>
-                <input type="text" id="buscar" name="destination"/>
-                <input type="submit" class="btn btn-info" value="Upload" name="upload" id="upload" />
+          <h3 class="text-info">Ingresar un documento a la base de datos</h3>
+          <form method="POST" action="upload" enctype="multipart/form-data">
+                <div class="form-group">
+                        <label for="ingresarDoc">Seleccionar el Documento a ingresar:</label>
+                        <input type="file" name="file" id="file" placeholder="Email">
+                </div>
+                <div class="form-group">
+                    <label for="seleccionarCarpeta">Seleccionar la carpeta de Destino del Documento:</label>
+                    <input type="text" class="form-control" id="buscar" name="destination"/>
+                    <input type="submit" class="btn btn-info" value="Subir" name="upload" id="upload" />
+                </div>
           </form>
-        
        <div>
             <jsp:include page="footer.jsp" />
        </div>

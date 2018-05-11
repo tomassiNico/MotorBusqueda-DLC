@@ -4,6 +4,9 @@
     Author     : aleex
 --%>
 
+<%@page import="clases.Serializacion.VocabularioWriter"%>
+<%@page import="clases.Serializacion.VocabularioReader"%>
+<%@page import="clases.Vocabulario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,6 +31,9 @@
     <![endif]-->
   </head>
   <body>
+      <% 
+        
+      %>
       <div class="container">
           <div id="menu">
               <jsp:include page="menu.jsp"/>
@@ -35,7 +41,6 @@
           <div id="formBusqueda">
               <jsp:include page="busqueda.jsp"/>
           </div>
-        
        <div>
             <jsp:include page="footer.jsp" />
        </div>

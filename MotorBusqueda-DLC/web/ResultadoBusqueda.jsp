@@ -4,6 +4,7 @@
     Author     : aleex
 --%>
 
+<%@page import="java.util.ArrayList"%>
 <%@page import="clases.Documento"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -20,6 +21,7 @@
 
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -35,20 +37,23 @@
           </div>
           <div class="tabla">
               <table class="table table-bordered">
-                  <tr>
+                  <tr class="row">
                       <th class="text-center">Nombre del Documento</th>
                       <th class="text-center">Peso del Documento</th>
                       <th class="text-center">Abrir Documento</th>
                   </tr>
-                  <c:forEach items="${documentos}" var="docs">
-                      <tr>
-                          <td>${docs.getName()}</td>
-                          <td>${docs.getPeso()}</td>
+                  
+                  <c:forEach items="${documentos}" var="doc">
+                      <tr class="row">
+                          <td >${doc.nombre}</td>
+                          <td>${doc.pesoTotal}</td>
                           <td>
                               <input class="btn btn-info" type="button" onclick="" value="VER">
                           </td>
                       </tr>
+                   </c:forEach>
               </table>
+                          
 
           </div>
        <div>

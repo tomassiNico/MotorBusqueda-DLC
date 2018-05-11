@@ -8,8 +8,6 @@ package servlets;
 import BD.ConexionBD;
 import clases.Busqueda;
 import clases.Documento;
-import clases.Serializacion.HashtableIOException;
-import clases.Serializacion.HashtableReader;
 import clases.Serializacion.VocabularioReader;
 import clases.Serializacion.VocabularioWriter;
 import clases.Termino;
@@ -20,6 +18,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -46,10 +45,10 @@ public class CtrlPagPrincipal extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, HashtableIOException, Exception {
+            throws ServletException, IOException, Exception {
         response.setContentType("text/html;charset=UTF-8");
-        File f = new File(".");
-           System.out.println(f.getAbsolutePath());
+        //File f = new File(".");
+        //   System.out.println(f.getAbsolutePath());
         ErrorMsg errorMsg = null;
         String errorTitle = "No se encontraron resultados para la busqueda";
         String dest = "/error.jsp";
@@ -63,7 +62,6 @@ public class CtrlPagPrincipal extends HttpServlet {
         {
             vocabulario = new Vocabulario();
             vocabulario.agregarCarpetaDocumentos();
-            
             VocabularioWriter hw = new VocabularioWriter();
             hw.write(vocabulario);
         }
@@ -86,23 +84,20 @@ public class CtrlPagPrincipal extends HttpServlet {
       
         
         
-//       dest = "/ResultadoBusqueda.jsp";
+      ArrayList<Documento> docsResultado = null; ;
         try {
-            dest = "/ResultadoBusqueda.jsp";
-            Busqueda busqueda = new Busqueda(palabrasBuscadas, 10, vocabulario.getContador());            
-            ArrayList<Documento> docsResultado = busqueda.ejecutarBusqueda();
-            System.out.println("Cantidad de documentos : " + docsResultado.size());
-            request.setAttribute("documentos", docsResultado);
-            dest = "/ResultadoBusqueda.jsp";
-            request.setAttribute("busqueda", palabras);
-            //request.setAttribute("resultado", documentos);*/
             
+            Busqueda busqueda = new Busqueda(palabrasBuscadas, 10);            
+            docsResultado = busqueda.ejecutarBusqueda();
+            request.setAttribute("documentos", docsResultado);
+            request.setAttribute("busqueda", palabras);
+            dest = "/ResultadoBusqueda.jsp";
+
         } catch (Exception e) {
             
             errorMsg = new ErrorMsg(errorTitle, e.getMessage());
             request.setAttribute("errorMsg", errorMsg);
         }
-        
         ServletContext app = this.getServletContext();
         RequestDispatcher disp = app.getRequestDispatcher(dest);
         disp.forward(request, response);
@@ -110,6 +105,7 @@ public class CtrlPagPrincipal extends HttpServlet {
         
         
         }
+  
     
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

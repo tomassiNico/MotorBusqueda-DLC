@@ -21,12 +21,12 @@ public class Busqueda {
     private int R;
     private int N;
 
-    public Busqueda(ArrayList palabrasBuscadas, int R, int N) {
+    public Busqueda(ArrayList palabrasBuscadas, int R) throws Exception {
         this.palabrasBuscadas = palabrasBuscadas;
         this.documentos = new Hashtable();
         this.R = R;
         this.ordenarPalabrasBuscadas();
-        this.N = N;
+        this.N = ConexionBD.getInstance().getCantidadDocumento();;
     }
     
     public void ordenarPalabrasBuscadas()
@@ -36,14 +36,12 @@ public class Busqueda {
     
     public void buscarDocumentosRelevantes() throws Exception
     {
-        int N = ConexionBD.getInstance().getCantidadDocumento();
-        ConexionBD.getInstance().closeConnection();
         for (Termino t: this.palabrasBuscadas)
         {
             ArrayList<Documento> docs = t.buscarDocumentos(this.R);
             for (Documento d: docs)
             {
-                d.agregarPeso(t, N);
+                d.agregarPeso(t, this.N);
                 this.agregarDocumentoRelevante(d, t);
             }
         }

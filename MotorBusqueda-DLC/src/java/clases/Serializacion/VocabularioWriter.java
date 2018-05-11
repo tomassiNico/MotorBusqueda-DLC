@@ -5,6 +5,7 @@
  */
 package clases.Serializacion;
 
+import clases.Serializacion.VocabularioIOException;
 import clases.Vocabulario;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;

@@ -29,7 +29,7 @@ public class NewMain {
      */
     public static void main(String[] args) throws VocabularioIOException, Exception {
         // TODO code application logic here
-        Vocabulario vocabulario;
+        /*Vocabulario vocabulario;
         try
         {
             VocabularioReader hr = new VocabularioReader();
@@ -52,7 +52,7 @@ public class NewMain {
             {
                 System.out.println("Documento: " + d.getNombre());
                 System.out.println("PESO: " + d.getPesoTotal());
-            }
+            }*/
         
     }
     
