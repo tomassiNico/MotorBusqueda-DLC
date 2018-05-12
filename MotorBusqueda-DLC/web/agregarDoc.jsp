@@ -40,8 +40,6 @@
                         <input type="file" name="file" id="file" placeholder="Email">
                 </div>
                 <div class="form-group">
-                    <label for="seleccionarCarpeta">Seleccionar la carpeta de Destino del Documento:</label>
-                    <input type="text" class="form-control" id="buscar" name="destination"/>
                     <input type="submit" class="btn btn-info" value="Subir" name="upload" id="upload" />
                 </div>
           </form>

@@ -94,6 +94,7 @@ public class ConexionBD {
             st.executeUpdate(Query);
         } catch (SQLException ex) {
         }
+        this.closeConnection();
     } 
     public void insertDataMasivo(String table_name, ArrayList palabra, String doc, ArrayList frec)
     {
@@ -122,11 +123,12 @@ public class ConexionBD {
              }
              //System.out.println("TAMAÑO DEL DOC: " + palabra.size());
              st.executeUpdate(Query.toString());
-             this.closeConnection();
+             
          } 
          catch (SQLException ex) {
              System.out.println("Error en la insercion de datos del Posteo. DOCUMENTO: " + doc);
         }
+         this.closeConnection();
     }
 
     public int getFrecuenciaDoc(String table_name, String palabra, String documento) {
@@ -144,12 +146,12 @@ public class ConexionBD {
         catch (SQLException e){
             System.out.println("ERROR AL OBTENER LA FRECUENCIA");
         }
+        this.closeConnection();
         return frecuencia;
     }
 
     public int getCantidadDocumento() {
         int cont = 0;
-        long inicio_ms = System.currentTimeMillis();
         try{
             String Query = "SELECT Distinct Documento FROM palabraxdocumento";
             Statement st = (Statement) conexion.createStatement();
@@ -164,23 +166,24 @@ public class ConexionBD {
         
         }
         this.closeConnection();
-        System.out.println("Tiempo que tardo " + (System.currentTimeMillis() - inicio_ms));
         return cont;
     }
 
-    public ArrayList<Documento> getDocumentosRelevantes(String table_name, int R, Termino termino)
+    public ArrayList<Documento> getDocumentosRelevantes(String table_name, int R, Termino termino, int N) throws Exception
     {
         ArrayList<Documento> docs = new ArrayList();
         try {
-            String Query = "SELECT Documento FROM " + table_name + " WHERE Termino='" + termino.getPalabra() + 
-                "' LIMIT "+ R; 
+            String Query = "SELECT Documento, Frecuencia FROM " + table_name + " WHERE Termino='" + termino.getPalabra() + 
+                "' ORDER BY Frecuencia DESC LIMIT "+ R; 
             Statement st = (Statement) conexion.createStatement();
             java.sql.ResultSet resultSet;
             resultSet = st.executeQuery(Query);
             while(resultSet.next())
             {
                 String documento = resultSet.getString("Documento");
+                int frec = resultSet.getInt("Frecuencia");
                 Documento d = new Documento(documento);
+                d.agregarPeso(termino, N, frec);
                 docs.add(d);
             }
         }

@@ -18,10 +18,11 @@ public class Documento implements Comparable {
     private String nombre;
     
     public Documento(String documento){
-        String direccion = "/home/nicolastomassi/DocumentosTP1/" + documento;
+        //String direccion = "/home/nicolastomassi/DocumentosTP1/" + documento;
         //String direccion = "C:\\Users\\aleex\\Documents\\NetBeansProjects\\MotorBusqueda-DLC\\MotorBusqueda-DLC\\src\\documentos\\" + documento;
+        String direccion = "documentos\\" + documento;
         this.documento = new File(direccion);
-        this.pesoTotal = 0;
+        this.pesoTotal = 0.0;
         this.nombre = this.documento.getName();
     }
 
@@ -31,16 +32,18 @@ public class Documento implements Comparable {
     
     
     
-    public double getCalcularPeso(Termino palabra, int N) throws Exception{
-        int tf = ConexionBD.getInstance().getFrecuenciaDoc("palabraxdocumento", palabra.getPalabra(), documento.getName());
-        ConexionBD.getInstance().closeConnection();
-        double w = tf * Math.log10(N/palabra.getNr());
+    public double getCalcularPeso(Termino palabra, int N, int tf) throws Exception{
+        double n = (double)N;
+        double nr = (double)palabra.getNr();
+        double log = Math.log10(n/nr);
+        double w = ((double)tf) * log;
+        w = Math.round(w*1000.0)/1000.0;
         return w;
     }
     
-    public void agregarPeso(Termino t, int N) throws Exception
+    public void agregarPeso(Termino t, int N , int frecuencia) throws Exception
     {
-        double w = this.getCalcularPeso(t , N);
+        double w = this.getCalcularPeso(t , N, frecuencia);
         this.pesoTotal += w;
     }
     

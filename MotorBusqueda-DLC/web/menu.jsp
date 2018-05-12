@@ -9,6 +9,5 @@
                 <ul class="nav navbar-nav">
                     <li class="bg-success"><a href="index.jsp">Inicio</a></li>
                     <li class="bg-success"><a href="agregarDoc.jsp">Agregar Documento</a></li>
-                    <li class="bg-success"><a href="configuracion.jsp">Configuracion</a></li>
                 </ul>
         </div>

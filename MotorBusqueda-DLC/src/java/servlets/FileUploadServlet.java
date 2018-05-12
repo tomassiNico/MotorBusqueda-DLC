@@ -5,6 +5,10 @@
  */
 package servlets;
 
+import clases.Serializacion.VocabularioIOException;
+import clases.Serializacion.VocabularioReader;
+import clases.Serializacion.VocabularioWriter;
+import clases.Vocabulario;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -14,6 +18,8 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -43,11 +49,11 @@ public class FileUploadServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request,
         HttpServletResponse response)
-        throws ServletException, IOException {
+        throws ServletException, IOException, Exception {
     response.setContentType("text/html;charset=UTF-8");
 
     // Create path components to save the file
-    final String path = request.getParameter("destination");
+    final String path = "documentos";
     final Part filePart = request.getPart("file");
     final String fileName = getFileName(filePart);
 
@@ -69,6 +75,26 @@ public class FileUploadServlet extends HttpServlet {
         writer.println("New file " + fileName + " created at " + path);
         LOGGER.log(Level.INFO, "File{0}being uploaded to {1}", 
                 new Object[]{fileName, path});
+        
+        Vocabulario vocabulario;
+        try
+        {
+            VocabularioReader vr = new VocabularioReader();
+            vocabulario = vr.read();
+            vocabulario.agregarDocumento(fileName);
+            VocabularioWriter vw = new VocabularioWriter();
+            vw.write(vocabulario);
+        }
+        catch(Exception e)
+        {
+        }
+        
+        String dest = "/index.jsp";
+        ServletContext app = this.getServletContext();
+        RequestDispatcher disp = app.getRequestDispatcher(dest);
+        disp.forward(request, response);
+        
+        
     } catch (FileNotFoundException fne) {
         writer.println("You either did not specify a file to upload or are "
                 + "trying to upload a file to a protected or nonexistent "
@@ -114,7 +140,11 @@ private String getFileName(final Part part) {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (Exception ex) {
+            Logger.getLogger(FileUploadServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -128,7 +158,12 @@ private String getFileName(final Part part) {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (Exception ex) {
+            Logger.getLogger(FileUploadServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
 
     /**

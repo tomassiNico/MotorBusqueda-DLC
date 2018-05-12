@@ -29,14 +29,16 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script language="JavaScript" type="text/javascript" src="./visualizarDocs"></script>
   </head>
   <body>
       <div class="container">
           <div id="menu">
               <jsp:include page="menu.jsp"/>
           </div>
+          
           <div class="tabla">
-              <table class="table table-bordered">
+              <table align="left"  class="table table-bordered">
                   <tr class="row">
                       <th class="text-center">Nombre del Documento</th>
                       <th class="text-center">Peso del Documento</th>
@@ -48,7 +50,10 @@
                           <td >${doc.nombre}</td>
                           <td>${doc.pesoTotal}</td>
                           <td>
-                              <input class="btn btn-info" type="button" onclick="" value="VER">
+                              <form method="post" action="visualizar">
+                                  <input type="text" value="${doc.nombre}" name="documento" hidden="">
+                                  <input class="btn btn-info" type="submit" value="VER">
+                              </form>
                           </td>
                       </tr>
                    </c:forEach>

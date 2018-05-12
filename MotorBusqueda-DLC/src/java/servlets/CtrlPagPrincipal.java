@@ -28,6 +28,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -47,24 +48,14 @@ public class CtrlPagPrincipal extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, Exception {
         response.setContentType("text/html;charset=UTF-8");
-        //File f = new File(".");
-        //   System.out.println(f.getAbsolutePath());
+        //C:\Users\aleex\AppData\Roaming\NetBeans\8.2\config\GF_4.1.1\domain1\config
         ErrorMsg errorMsg = null;
         String errorTitle = "No se encontraron resultados para la busqueda";
         String dest = "/error.jsp";
-        Vocabulario vocabulario;
-        try
-        {
-            VocabularioReader hr = new VocabularioReader();
-            vocabulario = hr.read();
-        }
-        catch(Exception e)
-        {
-            vocabulario = new Vocabulario();
-            vocabulario.agregarCarpetaDocumentos();
-            VocabularioWriter hw = new VocabularioWriter();
-            hw.write(vocabulario);
-        }
+        
+        HttpSession session = request.getSession();
+        Vocabulario vocabulario = (Vocabulario) session.getAttribute("vocabulario");
+        int cantidadDocumentos = (int) session.getAttribute("cantidadDocumentos");
         
         //toma la busqueda ingresada
         String palabras = request.getParameter("busqueda");
@@ -86,9 +77,12 @@ public class CtrlPagPrincipal extends HttpServlet {
         
       ArrayList<Documento> docsResultado = null; ;
         try {
-            
-            Busqueda busqueda = new Busqueda(palabrasBuscadas, 10);            
+            //String s = (String) request.getParameter("cantDoc");
+            //int cantDoc = Integer.valueOf(s);
+            Long tiempoInicial = System.currentTimeMillis();
+            Busqueda busqueda = new Busqueda(palabrasBuscadas, 10, cantidadDocumentos);            
             docsResultado = busqueda.ejecutarBusqueda();
+             System.out.println("Tiempo que tarda: " + (System.currentTimeMillis() - tiempoInicial));
             request.setAttribute("documentos", docsResultado);
             request.setAttribute("busqueda", palabras);
             dest = "/ResultadoBusqueda.jsp";

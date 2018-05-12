@@ -5,14 +5,13 @@
  */
 package servlets;
 
-import BD.ConexionBD;
-import clases.Config;
-import clases.Serializacion.ConfigWriter;
 import com.sun.org.apache.xalan.internal.xsltc.compiler.util.ErrorMsg;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Scanner;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -24,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author aleex
  */
-public class CrtlConfig extends HttpServlet {
+public class CtrlVisualizar extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,25 +35,51 @@ public class CrtlConfig extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, Exception {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String pathDoc = request.getParameter("destination");
-        String nom = request.getParameter("nombre");
-        int N = ConexionBD.getInstance().getCantidadDocumento();
-        Config config = new Config(pathDoc,N,nom);
+        String nomDoc = request.getParameter("documento");
         ErrorMsg errorMsg = null;
         String errorTitle = "No se encontraron resultados para la busqueda";
         String dest = "/error.jsp";
+        
+        File archivo = null;
+        FileReader fr = null;
+        BufferedReader br = null;
+        StringBuilder sb = new StringBuilder();
         try {
-            ConfigWriter cw = new ConfigWriter();
-            cw.write(config);
-            dest = "index.jsp";
+           archivo = new File ("documentos\\" + nomDoc);
+            System.out.println("ARchivo: " +archivo.getAbsolutePath());
+            fr = new FileReader (archivo);
+            br = new BufferedReader(fr);
+            String linea;
+            while((linea=br.readLine())!=null){
+                sb.append("\n" + linea);
+            }
+            dest = "/verArchivo.jsp";
+           /*Scanner sc =new Scanner(new File ("documentos\\" + nomDoc));
+           while (sc.hasNext()){
+               System.out.println(sc.nextLine());
+           }
+            dest = "/verArchivo.jsp";
+            sc.close();*/
         }
-        catch (Exception e) {
-            System.out.println("ERROR en ConfigWriter");
-            errorMsg = new ErrorMsg(errorTitle, e.getMessage());
-            request.setAttribute("errorMsg", errorMsg);
+        catch (Exception e){
+            System.out.println("Error al leer el archivo");
+            e.printStackTrace();
         }
+        finally {
+            try{                    
+                if( null != fr ){   
+                fr.close();     
+                }                  
+            }
+            catch (Exception e2){ 
+                e2.printStackTrace();
+            }
+        }
+        request.setAttribute("nomDoc", nomDoc);
+        request.setAttribute("parrafo", sb.toString());
+
         ServletContext app = this.getServletContext();
         RequestDispatcher disp = app.getRequestDispatcher(dest);
         disp.forward(request, response);
@@ -72,11 +97,7 @@ public class CrtlConfig extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (Exception ex) {
-            Logger.getLogger(CrtlConfig.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     }
 
     /**
@@ -90,11 +111,7 @@ public class CrtlConfig extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (Exception ex) {
-            Logger.getLogger(CrtlConfig.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     }
 
     /**

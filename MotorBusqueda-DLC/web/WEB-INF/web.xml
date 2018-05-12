@@ -12,6 +12,10 @@
         <servlet-name>CrtlConfig</servlet-name>
         <servlet-class>servlets.CrtlConfig</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CtrlVisualizar</servlet-name>
+        <servlet-class>servlets.CtrlVisualizar</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>CtrlPagPrincipal</servlet-name>
         <url-pattern>/buscar</url-pattern>
@@ -23,6 +27,10 @@
     <servlet-mapping>
         <servlet-name>CrtlConfig</servlet-name>
         <url-pattern>/config</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CtrlVisualizar</servlet-name>
+        <url-pattern>/visualizar</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

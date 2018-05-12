@@ -10,5 +10,5 @@
     <form class="form-inline" action="buscar" method="post">
         <input type="text" class="form-control" id="buscar" name="busqueda" placeholder="Ingrese su busqueda">
         <input class="btn btn-primary" type="submit" id="entrar" name="entrar" value="Buscar">
-</form>
+    </form>
 </div>

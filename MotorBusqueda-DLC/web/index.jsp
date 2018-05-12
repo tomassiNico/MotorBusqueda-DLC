@@ -4,6 +4,8 @@
     Author     : aleex
 --%>
 
+<%@page import="clases.Documento"%>
+<%@page import="BD.ConexionBD"%>
 <%@page import="clases.Serializacion.VocabularioWriter"%>
 <%@page import="clases.Serializacion.VocabularioReader"%>
 <%@page import="clases.Vocabulario"%>
@@ -31,10 +33,27 @@
     <![endif]-->
   </head>
   <body>
-      <% 
-        
-      %>
       <div class="container">
+          <%
+              session = request.getSession(true);
+              Vocabulario vocabulario;
+                try
+                {
+                    VocabularioReader hr = new VocabularioReader();
+                    vocabulario = hr.read();
+
+                }
+                catch(Exception e)
+                {
+                    vocabulario = new Vocabulario();
+                    vocabulario.agregarCarpetaDocumentos();
+                    VocabularioWriter hw = new VocabularioWriter();
+                    hw.write(vocabulario);
+                }
+              session.setAttribute("vocabulario", vocabulario);
+              int cantDoc = ConexionBD.getInstance().getCantidadDocumento();
+              session.setAttribute("cantidadDocumentos", cantDoc);
+          %>
           <div id="menu">
               <jsp:include page="menu.jsp"/>
           </div>

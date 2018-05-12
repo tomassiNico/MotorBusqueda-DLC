@@ -4,6 +4,8 @@
     Author     : aleex
 --%>
 
+<%@page import="java.util.ArrayList"%>
+<%@page import="clases.Documento"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -19,6 +21,7 @@
 
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -26,25 +29,18 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script language="JavaScript" type="text/javascript" src="./visualizarDocs"></script>
   </head>
   <body>
       <div class="container">
           <div id="menu">
               <jsp:include page="menu.jsp"/>
           </div>
-          <div id="config">
-              <form method="POST" action="config">
-                <div class="form-group">
-                        <label for="ingresarDoc">Ruta de la carpeta Documentos: </label>
-                        <input type="text" class="form-control" id="buscar" name="destination"/>
-                </div>
-                <div class="form-group">
-                    <label for="seleccionarCarpeta">Nombre y Apellido: </label>
-                    <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ingrese su nombre y apellido">
-                </div>
-                <input type="submit" class="btn btn-info" value="Guardar Configuracion" name="upload" id="upload" />
-                  
-              </form>
+          <div class="title">
+              <h3>${nomDoc}</h3>
+          </div>
+          <div>
+              <p>${parrafo}</p>
           </div>
        <div>
             <jsp:include page="footer.jsp" />

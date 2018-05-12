@@ -58,7 +58,7 @@ public class Vocabulario implements Serializable {
         //ingresa en la base de datos el documento tantas veces como terminos tenga (con su frecuencia observada)
         
         //LectorDocumento l = new LectorDocumento("/home/nicolastomassi/DocumentosTP1/" + archivo);
-        LectorDocumento l = new LectorDocumento("C:\\Users\\aleex\\Documents\\NetBeansProjects\\MotorBusqueda-DLC\\MotorBusqueda-DLC\\src\\documentos\\" + archivo);
+        LectorDocumento l = new LectorDocumento("documentos\\" + archivo);
         Hashtable<String, Integer> aux = l.palabrasObtenidas();
         ArrayList term = new ArrayList();
         ArrayList frec = new ArrayList();
@@ -96,7 +96,7 @@ public class Vocabulario implements Serializable {
         };
        
         //File f= new File("/home/nicolastomassi/DocumentosTP1");
-        File f= new File("C:\\Users\\aleex\\Documents\\NetBeansProjects\\MotorBusqueda-DLC\\MotorBusqueda-DLC\\src\\documentos");
+        File f= new File("documentos");
         String [] fileList=f.list(filter); //implementa filtro para sólo leer archivos .txt
         
         //itera para agregar cada documento de la carpeta
